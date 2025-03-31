@@ -8,5 +8,4 @@ int main(void){
     cout << "Hello course work!" << endl;
 
     cout << endl;
-    return 0;
 }
