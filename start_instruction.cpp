@@ -20,19 +20,22 @@ void up_bot_fill(){
 }
 
 void controlled_output(const string s){
-    double space_betw = (UP_BOT - s.length() - 1) / 2;
+    int space_betw = (UP_BOT - s.length() - 1) / 2;
 
-    double totalLength = (space_betw * 2) + s.length() + 1;
+    int totalLength = (space_betw * 2) + s.length() + 1;
 
+    // corecting table for text with uni code(approximately equal sing)
     if(s.find("\u2248") != string::npos){
         space_betw = space_betw + 1;
     }
-    if(s.find("[0m") != string::npos){
-        space_betw = space_betw + 4;
-        
-    }
 
-    if(totalLength != 75){
+    // corecting table for text with color change
+    if(s.find("[0m") != string::npos){
+
+        space_betw = space_betw + 4;
+        cout << first_last << string(space_betw, ' ') << s << string(space_betw + 1, ' ') << first_last;
+
+    }else if(totalLength != 75){
 
         if(totalLength > 75){
             cout << first_last << string(space_betw, ' ') << s << string(space_betw - 1, ' ') << first_last;
@@ -43,6 +46,8 @@ void controlled_output(const string s){
     }else{
         cout << first_last << string(space_betw, ' ') << s << string(space_betw, ' ') << first_last;
     }
+
+
 
     cout << endl;
 }
@@ -72,13 +77,14 @@ void start_tabel(){
     yes_square.push_back("\033[32m*****   -------------\033[0m");
 
     vector<string> no_square;
-    no_square.push_back("\033[31m*****   ----------------\033[0m");
-    no_square.push_back("\033[31m| X | - Can`t be placed\033[0m");
-    no_square.push_back("\033[31m*****   ----------------\033[0m");
+    no_square.push_back("\033[31m*****   -----------------\033[0m");
+    no_square.push_back("\033[31m| \u2248 | - against the rules\033[0m");
+    no_square.push_back("\033[31m*****   -----------------\033[0m");
 
     vector<vector<string> > squares;
     squares.push_back(yes_square);
     squares.push_back(no_square);
+
     // first text to show
     for(int i = 0; i < sizeof(first_message) / sizeof(first_message[0]); i++){
         controlled_output(first_message[i]);
