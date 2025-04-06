@@ -12,7 +12,7 @@ using namespace std;
 void up_bot_fill(){
     cout << " ";
     for(int i = 0; i < UP_BOT - 1; i++){
-        cout << "_";
+        cout << "-";
     }
     cout << " ";
     cout << endl;
