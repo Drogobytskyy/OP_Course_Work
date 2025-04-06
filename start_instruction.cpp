@@ -9,7 +9,6 @@
 
 using namespace std;
 
-
 void up_bot_fill(){
     cout << " ";
     for(int i = 0; i < UP_BOT - 1; i++){
@@ -47,13 +46,12 @@ void controlled_output(const string s){
         cout << first_last << string(space_betw, ' ') << s << string(space_betw, ' ') << first_last;
     }
 
-
-
     cout << endl;
 }
 
-
 void start_tabel(){
+
+    // strings that will be displayed
     const string s1 = "I welcome you into my coursework project!";
     const string s2 = "We will see the result of task2 solution";
     const string s3 = "Task is to place ships in the right way";
@@ -69,31 +67,20 @@ void start_tabel(){
     const string first_message[] = {s1,s2,s3,s4,s5,s6,s7};
     const string second_message[] = {s8,s9};
     const string third_message[] = {s10,s11,s12};
+
     up_bot_fill();
-
-    vector<string> yes_square;
-    yes_square.push_back("\033[32m*****   -------------\033[0m");
-    yes_square.push_back("\033[32m|   | - Can be placed\033[0m");
-    yes_square.push_back("\033[32m*****   -------------\033[0m");
-
-    vector<string> no_square;
-    no_square.push_back("\033[31m*****   -----------------\033[0m");
-    no_square.push_back("\033[31m| \u2248 | - against the rules\033[0m");
-    no_square.push_back("\033[31m*****   -----------------\033[0m");
-
-    vector<vector<string> > squares;
-    squares.push_back(yes_square);
-    squares.push_back(no_square);
 
     // first text to show
     for(int i = 0; i < sizeof(first_message) / sizeof(first_message[0]); i++){
         controlled_output(first_message[i]);
     }
     up_bot_fill();
+
     // second text to show
     for(int i = 0; i < sizeof(second_message) / sizeof(second_message[0]); i++){
         controlled_output(second_message[i]);
     }
+
     // one-sector ship
     vector<string> one_column_ship;
     one_column_ship.push_back("*****     ----------");
@@ -125,6 +112,7 @@ void start_tabel(){
     ships.push_back(three_column_ship);
     ships.push_back(four_column_ship);
 
+    // displaying ships
     for(int i = 0; i < ships.size(); i++){
         for (int j = 0; j < ships[i].size(); j++) {
             controlled_output(ships[i][j]);
@@ -136,6 +124,21 @@ void start_tabel(){
         controlled_output(third_message[i]);
     }
     
+    // squares yes and no
+    vector<string> yes_square;
+    yes_square.push_back("\033[32m*****   -------------\033[0m");
+    yes_square.push_back("\033[32m|   | - Can be placed\033[0m");
+    yes_square.push_back("\033[32m*****   -------------\033[0m");
+
+    vector<string> no_square;
+    no_square.push_back("\033[31m*****   -----------------\033[0m");
+    no_square.push_back("\033[31m| \u2248 | - against the rules\033[0m");
+    no_square.push_back("\033[31m*****   -----------------\033[0m");
+
+    vector<vector<string> > squares;
+    squares.push_back(yes_square);
+    squares.push_back(no_square);
+
     // squares showing
     for(int i = 0; i < squares.size(); i++){
         for (int j = 0; j < squares[i].size(); j++) {
