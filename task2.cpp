@@ -11,7 +11,7 @@ bool is_valid_input(const string& input) {
     return input == "1" || input == "start" || input == "2" || input == "exit";
 }
 
-string get_valid_input() {
+string get_valid_input(StartInstruction &instruction) {
     string input;
 
     while (true) {
@@ -24,33 +24,26 @@ string get_valid_input() {
         if (is_valid_input(input)) {
             return input;
         } else {
-            up_bot_fill();
-            controlled_output("Invalid input. Please try again.");
-            up_bot_fill();
+            instruction.custom_message("Invalid input. Please try again.");
+            
         }
     }
 }
 
-int main(void){
+int main(void) {
     cout << endl;
 
-    start_tabel();
-    const string before_start_text = "If you undestood everything do you want to start?";
-    controlled_output(before_start_text);
-    const string start_or_not = "Type: (1) or \"start\" | (2) or \"exit\"";
-    controlled_output(start_or_not);
-    up_bot_fill();
+    StartInstruction instruction;
+    instruction.show();  
     
-    string choice = get_valid_input();
+    string choice = get_valid_input(instruction);
+
     if(choice == "1" || choice == "start"){
         //
     }else{
-        up_bot_fill();
-        controlled_output("Goodbye! Hope we will meet again!");
-        up_bot_fill();
+        instruction.custom_message("Goodbye! Hope we will meet again!");
         return 0;
     }
-
     cout << endl;
     return 0;
 }
