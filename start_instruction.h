@@ -4,8 +4,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cstdlib>
 
-class StartInstruction {
+class Start_instruction {
     
     void up_bottom_fill();
     void controlled_output(const std::string &s);
@@ -18,7 +19,17 @@ class StartInstruction {
         void custom_message(const std::string &message);
         void up_and_bot();
         void custom_only_text(const std::string &message);
+
+        void clear_screen(){
+            #ifdef _WIN32
+                system("cls");
+            #else
+                system("clear");
+            #endif
+        }
 };
+
+
 
 #endif
 
