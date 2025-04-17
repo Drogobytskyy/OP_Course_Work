@@ -2,3 +2,7 @@
 
 /output/
 .vscode/
+
+myprog
+*.exe
+*.out
