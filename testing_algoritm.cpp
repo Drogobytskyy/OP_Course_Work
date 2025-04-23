@@ -38,6 +38,13 @@ void print(int play_zone[7][9]){
     }
 }
 
+void copy_zone(int src[7][9], int dest[7][9]) {
+    for (int i = 0; i < 7; i++) {
+        for (int j = 0; j < 9; j++) {
+            dest[i][j] = src[i][j];
+        }
+    }
+}
 
 struct Ship{
     int data;
@@ -127,50 +134,60 @@ bool has_nearby_ship(int x, int y, int play_zone[7][9]) {
     return false;
 }
 
-void place_ships_on_map(int play_zone[7][9], ship_vector &ship_list) {
-    int ship_index = 0;
-    Ship *current = ship_list[ship_index]->get_head();
-    Ship *current_head = ship_list[ship_index]->get_head();
-
+bool try_place_ship(int play_zone[7][9], Ship* current, int data) {
     for (int x = 0; x < 7; x++) {
         for (int y = 0; y < 9; y++) {
 
-            if (current != nullptr) {
+            Ship* cursor = current;
+            int temp_zone[7][9];
+            copy_zone(play_zone, temp_zone);
 
-                if (is_valid(&play_zone[x][y]) && !has_nearby_ship(x, y, play_zone)) {
+            if (cursor != nullptr && is_valid(&temp_zone[x][y]) && !has_nearby_ship(x, y, temp_zone)) {
+                temp_zone[x][y] = cursor->data;
+                cursor = cursor->next;
 
-                    play_zone[x][y] = current->data;
-                    current = current->next;
+                if (cursor != nullptr && is_inside_zone(x + 1, y) && is_valid(&temp_zone[x + 1][y]) && temp_zone[x][y] == data) {
+                    for (int x2 = x + 1; x2 < 7; x2++) {
+                        if (temp_zone[x2][y] == SPECIAL) break;
 
-                    if (current != nullptr && is_inside_zone(x + 1, y) && is_valid(&play_zone[x + 1][y]) && play_zone[x][y] == current_head->data) {
-
-                        for (int x2 = x + 1; x2 < 7; x2++) {
-
-                            if (play_zone[x2][y] == SPECIAL) {
-                                break;
-                            }
-
-                            if (is_valid(&play_zone[x2][y])) {
-                                play_zone[x2][y] = current->data;
-                                current = current->next;
-                                if (current == nullptr) {
-                                    break;
-                                }
-                            }
+                        if (is_valid(&temp_zone[x2][y])) {
+                            temp_zone[x2][y] = cursor->data;
+                            cursor = cursor->next;
+                            if (cursor == nullptr) break;
                         }
                     }
+                }
 
-                    if (current == nullptr && ship_index + 1 < (int)ship_list.size()) {
-                        ship_index++;
-                        current = ship_list[ship_index]->get_head();
-                        current_head = ship_list[ship_index]->get_head();
-                    }
-
+                if (cursor == nullptr) {
+                    copy_zone(temp_zone, play_zone);  
+                    return true;
                 }
             }
         }
     }
+    return false;  
 }
+
+
+void place_ships_on_map(int play_zone[7][9], ship_vector &ship_list) {
+    int ship_index = 0;
+
+    while (ship_index < (int)ship_list.size()) {
+        Ship* current = ship_list[ship_index]->get_head();
+        int backup_zone[7][9];
+        copy_zone(play_zone, backup_zone);
+
+        if (try_place_ship(play_zone, current, current->data)) {
+            ship_index++; 
+        } else {
+            cout << "Retrying placement for ship of size " << current->data << "...\n";
+            copy_zone(backup_zone, play_zone); 
+            
+            break;
+        }
+    }
+}
+
 
 int main(void){
     cout << endl;
