@@ -26,26 +26,41 @@ void print(int play_zone[7][9]){
     for (int i = 0; i < 7; i++){
         cout << "\n";
         for(int j = 0; j < 9; j++){
-            if(play_zone[i][j] == 1){
+            if(play_zone[i][j] == VALID){
                 cout << " ";
-                cout << "1 ";
-            }else if(play_zone[i][j] == -1){
+                cout << VALID << " ";
+            }else if(play_zone[i][j] == SPECIAL){
                 cout << " ";
-                cout << "3 ";
+                cout << "- ";
             }else{
                 cout << " ";
-                cout << "0 ";
+                cout << INVALID << " ";
             }
         }
     }
 }
 
+void print_changed(int play_zone[7][9]){
+
+    for(int i = 0; i < 7; i++){
+        cout << endl;
+        for(int j = 0; j < 9; j++){
+            if(play_zone[i][j] == SPECIAL){
+                cout << "  -  "; 
+            }else{
+                cout << "  " << play_zone[i][j] << "  ";
+            }
+
+        }
+        cout << endl;
+    }
+}
+
+
 struct Ship{
     int data;
     Ship *next;
 };
-
-
 
 class Linked_ships{
     Ship *head;
@@ -77,6 +92,14 @@ class Linked_ships{
 
         void show_ship();
 
+
+        int get_data() const {
+            return head ? head->data : -1;
+        }
+
+        Ship* get_head() const {
+            return head;
+        }
 };
 
 void Linked_ships::show_ship(){
@@ -113,6 +136,32 @@ int main(void){
         sh->show_ship();
     }
 
+    cout << endl;
+
+    print(play_zone);
+    cout << endl;
+
+    cout << endl;
+
+    int ship_index = 0;
+    Ship* current_ship = ship_list[ship_index]->get_head(); 
+
+    for (int i = 0; i < 7; i++) {
+        for (int j = 0; j < 9; j++) {
+
+            if (play_zone[i][j] == VALID && current_ship != nullptr) {
+                play_zone[i][j] = current_ship->data;
+                current_ship = current_ship->next;
+    
+
+                if (current_ship == nullptr && ship_index + 1 < (int)ship_list.size()) {
+                    ship_index++;
+                    current_ship = ship_list[ship_index]->get_head();
+                }
+            }
+        }
+    }
+    print_changed(play_zone);
     cout << endl;
 
     // ships deleting
