@@ -127,6 +127,51 @@ bool has_nearby_ship(int x, int y, int play_zone[7][9]) {
     return false;
 }
 
+void place_ships_on_map(int play_zone[7][9], ship_vector &ship_list) {
+    int ship_index = 0;
+    Ship *current = ship_list[ship_index]->get_head();
+    Ship *current_head = ship_list[ship_index]->get_head();
+
+    for (int x = 0; x < 7; x++) {
+        for (int y = 0; y < 9; y++) {
+
+            if (current != nullptr) {
+
+                if (is_valid(&play_zone[x][y]) && !has_nearby_ship(x, y, play_zone)) {
+
+                    play_zone[x][y] = current->data;
+                    current = current->next;
+
+                    if (current != nullptr && is_inside_zone(x + 1, y) && is_valid(&play_zone[x + 1][y]) && play_zone[x][y] == current_head->data) {
+
+                        for (int x2 = x + 1; x2 < 7; x2++) {
+
+                            if (play_zone[x2][y] == SPECIAL) {
+                                break;
+                            }
+
+                            if (is_valid(&play_zone[x2][y])) {
+                                play_zone[x2][y] = current->data;
+                                current = current->next;
+                                if (current == nullptr) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (current == nullptr && ship_index + 1 < (int)ship_list.size()) {
+                        ship_index++;
+                        current = ship_list[ship_index]->get_head();
+                        current_head = ship_list[ship_index]->get_head();
+                    }
+
+                }
+            }
+        }
+    }
+}
+
 int main(void){
     cout << endl;
     ship_vector ship_list;
@@ -152,57 +197,8 @@ int main(void){
     print(play_zone);
     cout << endl;
 
-    int ship_index = 0;
-    Ship *current = ship_list[ship_index]->get_head();
-    Ship *current_head = ship_list[ship_index]->get_head();
+    place_ships_on_map(play_zone, ship_list);
 
-    for(int x = 0; x < 7; x++){
-        for(int y = 0; y < 9; y++){
-
-            if(current != nullptr){
-
-                if(is_valid(&play_zone[x][y]) && !has_nearby_ship(x, y, play_zone)){
-
-
-                    play_zone[x][y] = current->data;
-                    current = current->next;
-
-                    if(current != nullptr && is_inside_zone(x + 1, y) && is_valid(&play_zone[x + 1][y]) && play_zone[x][y] == current_head->data){
-
-                        for(int x2 = x + 1; x2 < 7; x2++){
-
-                            if(play_zone[x2][y] == SPECIAL){
-                                break;
-                            }
-
-                            if(is_valid(&play_zone[x2][y])){
-                                
-
-                                play_zone[x2][y] = current->data;
-                                current = current->next;
-                                if(current == nullptr){
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    if (current == nullptr && ship_index + 1 < (int)ship_list.size()) {
-                        ship_index++;
-                        current = ship_list[ship_index]->get_head();  
-                        current_head = ship_list[ship_index]->get_head(); 
-                    }
-
-                }else{
-                    continue;
-                }
-
-
-            }
-
-
-        }
-    }
     cout << endl;
 
     print(play_zone);
