@@ -21,26 +21,8 @@ int play_zone[7][9] = {
     { INVALID, VALID, VALID, VALID, INVALID, INVALID, INVALID, INVALID, INVALID,}
 };
 
+
 void print(int play_zone[7][9]){
-
-    for (int i = 0; i < 7; i++){
-        cout << "\n";
-        for(int j = 0; j < 9; j++){
-            if(play_zone[i][j] == VALID){
-                cout << " ";
-                cout << VALID << " ";
-            }else if(play_zone[i][j] == SPECIAL){
-                cout << " ";
-                cout << "- ";
-            }else{
-                cout << " ";
-                cout << INVALID << " ";
-            }
-        }
-    }
-}
-
-void print_changed(int play_zone[7][9]){
 
     for(int i = 0; i < 7; i++){
         cout << endl;
@@ -116,6 +98,35 @@ void Linked_ships::show_ship(){
 
 typedef vector<Linked_ships*> ship_vector;
 
+// check if INSIDE
+bool is_inside_zone(int x, int y) {
+    return x >= 0 && x < 7 && y >= 0 && y < 9;
+}
+
+// check if VALID
+bool is_valid(int *zone){
+    return *zone == VALID;
+}
+// check if SHIP
+bool is_ship(int *zone){
+    return *zone != VALID && *zone != INVALID && *zone !=SPECIAL;
+}
+
+bool has_nearby_ship(int x, int y, int play_zone[7][9]) {
+    int dx[] = {-1, -1, -1,  0, 0, 1, 1, 1};
+    int dy[] = {-1,  0,  1, -1, 1,-1, 0, 1};
+
+    for (int dir = 0; dir < 8; dir++) {
+        int nx = x + dx[dir];
+        int ny = y + dy[dir];
+
+        if (is_inside_zone(nx, ny) && is_ship(&play_zone[nx][ny])) {
+            return true;
+        }
+    }
+    return false;
+}
+
 int main(void){
     cout << endl;
     ship_vector ship_list;
@@ -141,28 +152,37 @@ int main(void){
     print(play_zone);
     cout << endl;
 
-    cout << endl;
-
     int ship_index = 0;
-    Ship* current_ship = ship_list[ship_index]->get_head(); 
+    Ship* current = ship_list[ship_index]->get_head();
 
-    for (int i = 0; i < 7; i++) {
-        for (int j = 0; j < 9; j++) {
 
-            if (play_zone[i][j] == VALID && current_ship != nullptr) {
-                play_zone[i][j] = current_ship->data;
-                current_ship = current_ship->next;
-    
 
-                if (current_ship == nullptr && ship_index + 1 < (int)ship_list.size()) {
-                    ship_index++;
-                    current_ship = ship_list[ship_index]->get_head();
+    for(int x = 0; x < 7; x++){
+        for(int y = 0; y < 9; y++){
+
+            if(current != nullptr){
+                if(is_valid(&play_zone[x][y]) && !has_nearby_ship(x, y, play_zone)){
+                    play_zone[x][y] = current->data;
+                    current = current->next;
+
+                    if (current == nullptr && ship_index + 1 < (int)ship_list.size()) {
+                        ship_index++;
+                        current = ship_list[ship_index]->get_head();  
+                    }
+
+                }else{
+                    continue;
                 }
+
+
             }
+
+
         }
     }
-    print_changed(play_zone);
     cout << endl;
+
+    print(play_zone);
 
     // ships deleting
     for (Linked_ships* sh : ship_list) {
