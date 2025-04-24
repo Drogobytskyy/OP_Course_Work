@@ -3,6 +3,7 @@
 #include <cctype>
 #include <cstdlib>
 #include <vector>
+#include <algorithm>
 
 #define VALID 9
 #define INVALID 0 
@@ -209,25 +210,76 @@ void place_ships_on_map(int play_zone[7][9], ship_vector &ship_list) {
             break;
         }
     }
+    
 }
+
+bool try_all_unique_permutations(ship_vector& ship_list, int play_zone[7][9]) {
+    vector<int> lengths;
+    for (Linked_ships* ship : ship_list) {
+        lengths.push_back(ship->get_data());
+    }
+
+    sort(lengths.begin(), lengths.end());
+
+    int attempts = 0;
+
+    do {
+        ship_vector permuted;
+
+        for (int len : lengths) {
+            permuted.push_back(new Linked_ships(len));
+        }
+
+        int temp_zone[7][9];
+        copy_zone(play_zone, temp_zone);
+
+        bool success = true;
+        for (Linked_ships* ship : permuted) {
+            if (!try_place_ship(temp_zone, ship->get_head())) {
+                success = false;
+                break;
+            }
+        }
+
+        attempts++;
+
+        if (success) {
+            copy_zone(temp_zone, play_zone);
+            cout << "\nЗнайдено вдалу перестановку після " << attempts << " спроб:\n";
+            for (int len : lengths) {
+                cout << len << " ";
+            }
+            cout << "\n";
+            for (Linked_ships* sh : permuted) delete sh;
+            return true;
+        }
+
+        for (Linked_ships* sh : permuted) delete sh;
+
+    } while (next_permutation(lengths.begin(), lengths.end()));
+
+    cout << "\nНе вдалося розмістити кораблі. Кількість унікальних спроб: " << attempts << "\n";
+    return false;
+}
+
 
 int main(void){
     cout << endl;
     ship_vector ship_list;
 
-    ship_list.push_back(new Linked_ships(1));
-    ship_list.push_back(new Linked_ships(3));
-    ship_list.push_back(new Linked_ships(1));
-    ship_list.push_back(new Linked_ships(2));
-    ship_list.push_back(new Linked_ships(2));
-    ship_list.push_back(new Linked_ships(1));
-    ship_list.push_back(new Linked_ships(2));
-    ship_list.push_back(new Linked_ships(1));
-    ship_list.push_back(new Linked_ships(4));
-    ship_list.push_back(new Linked_ships(3));
-
     /*
-    real input!
+    ship_list.push_back(new Linked_ships(1));
+    ship_list.push_back(new Linked_ships(3));
+    ship_list.push_back(new Linked_ships(1));
+    ship_list.push_back(new Linked_ships(2));
+    ship_list.push_back(new Linked_ships(2));
+    ship_list.push_back(new Linked_ships(1));
+    ship_list.push_back(new Linked_ships(2));
+    ship_list.push_back(new Linked_ships(1));
+    ship_list.push_back(new Linked_ships(4));
+    ship_list.push_back(new Linked_ships(3));
+    */
+
 
     ship_list.push_back(new Linked_ships(4));
     ship_list.push_back(new Linked_ships(3));
@@ -239,15 +291,18 @@ int main(void){
     ship_list.push_back(new Linked_ships(1));
     ship_list.push_back(new Linked_ships(1));
     ship_list.push_back(new Linked_ships(1));
-    */
+    
 
     cout << endl;
 
     print(play_zone);
     cout << endl;
 
-    place_ships_on_map(play_zone, ship_list);
-
+    if (try_all_unique_permutations(ship_list, play_zone)) {
+        cout << "EXELENT" << endl;
+    } else {
+        cout << "ERROR." << endl;
+    }
     cout << endl;
 
     print(play_zone);
