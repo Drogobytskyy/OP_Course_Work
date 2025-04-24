@@ -39,7 +39,7 @@ void Start_instruction::controlled_output(const string& s) {
 }
 
 void Start_instruction::show_message_block(const vector<string>& messages) {
-    for(int i = 0; i < messages.size(); i++){
+    for(int i = 0; i < (int)messages.size(); i++){
         controlled_output(messages[i]);
     }
 }
@@ -91,7 +91,7 @@ void Start_instruction::show_ships() {
     ships.push_back(three_column_ship);
     ships.push_back(four_column_ship);
 
-    for(int i = 0; i < ships.size(); i++){
+    for(int i = 0; i < (int)ships.size(); i++){
         show_message_block(ships[i]);
     }
 }
@@ -115,7 +115,7 @@ void Start_instruction::show_squares() {
     squares.push_back(yes_square);
     squares.push_back(no_square);
 
-    for (int i = 0; i < squares.size();i++){
+    for (int i = 0; i < (int)squares.size();i++){
         show_message_block(squares[i]);
     }
         

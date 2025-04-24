@@ -6,3 +6,7 @@
 myprog
 *.exe
 *.out
+
+myalg
+*.exe
+*.out
