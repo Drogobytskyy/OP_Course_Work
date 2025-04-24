@@ -10,7 +10,6 @@
 
 using namespace std;
 
-
 int play_zone[7][9] = {
     { INVALID, INVALID, VALID, INVALID, VALID, INVALID, INVALID, INVALID, INVALID },
     { VALID, VALID, VALID, INVALID, VALID, INVALID, VALID, VALID, VALID },
@@ -21,24 +20,24 @@ int play_zone[7][9] = {
     { INVALID, VALID, VALID, VALID, INVALID, INVALID, INVALID, INVALID, INVALID,}
 };
 
-
 void print(int play_zone[7][9]){
 
     for(int i = 0; i < 7; i++){
         cout << endl;
         for(int j = 0; j < 9; j++){
+
             if(play_zone[i][j] == SPECIAL){
                 cout << "  -  "; 
             }else{
                 cout << "  " << play_zone[i][j] << "  ";
             }
-
         }
         cout << endl;
     }
 }
 
 void copy_zone(int src[7][9], int dest[7][9]) {
+
     for (int i = 0; i < 7; i++) {
         for (int j = 0; j < 9; j++) {
             dest[i][j] = src[i][j];
@@ -81,7 +80,6 @@ class Linked_ships{
 
         void show_ship();
 
-
         int get_data() const {
             return head ? head->data : -1;
         }
@@ -92,8 +90,10 @@ class Linked_ships{
 };
 
 void Linked_ships::show_ship(){
+
     Ship *current = head;
     while(current){
+
         cout << current->data;  
         current = current->next;
         if(current){
@@ -151,6 +151,7 @@ bool try_place_ship(int play_zone[7][9], Ship* current) {
 
             bool can_place_vertically = true;
             for (int i = 0; i < length; ++i) {
+
                 int xi = x + i;
                 if (xi >= 7 || !is_inside_zone(xi, y) || !is_valid(&play_zone[xi][y]) || has_nearby_ship(xi, y, play_zone)) {
                     can_place_vertically = false;
@@ -159,6 +160,7 @@ bool try_place_ship(int play_zone[7][9], Ship* current) {
             }
 
             if (can_place_vertically) {
+
                 Ship* cursor = current;
                 for (int i = 0; i < length; ++i) {
                     play_zone[x + i][y] = cursor->data;
@@ -169,6 +171,7 @@ bool try_place_ship(int play_zone[7][9], Ship* current) {
 
             bool can_place_horizontally = true;
             for (int i = 0; i < length; ++i) {
+
                 int yi = y + i;
                 if (yi >= 9 || !is_inside_zone(x, yi) || !is_valid(&play_zone[x][yi]) || has_nearby_ship(x, yi, play_zone)) {
                     can_place_horizontally = false;
@@ -177,6 +180,7 @@ bool try_place_ship(int play_zone[7][9], Ship* current) {
             }
 
             if (can_place_horizontally) {
+
                 Ship* cursor = current;
                 for (int i = 0; i < length; ++i) {
                     play_zone[x][y + i] = cursor->data;
@@ -190,11 +194,11 @@ bool try_place_ship(int play_zone[7][9], Ship* current) {
     return false;
 }
 
-
 void place_ships_on_map(int play_zone[7][9], ship_vector &ship_list) {
     int ship_index = 0;
     
     while (ship_index < (int)ship_list.size()) {
+
         Ship* current = ship_list[ship_index]->get_head();
         int backup_zone[7][9];
         copy_zone(play_zone, backup_zone);
@@ -206,7 +210,6 @@ void place_ships_on_map(int play_zone[7][9], ship_vector &ship_list) {
         }
     }
 }
-
 
 int main(void){
     cout << endl;
@@ -223,11 +226,20 @@ int main(void){
     ship_list.push_back(new Linked_ships(4));
     ship_list.push_back(new Linked_ships(3));
 
+    /*
+    real input!
 
-    // ships output
-    for(Linked_ships *sh : ship_list){
-        sh->show_ship();
-    }
+    ship_list.push_back(new Linked_ships(4));
+    ship_list.push_back(new Linked_ships(3));
+    ship_list.push_back(new Linked_ships(3));
+    ship_list.push_back(new Linked_ships(2));
+    ship_list.push_back(new Linked_ships(2));
+    ship_list.push_back(new Linked_ships(2));
+    ship_list.push_back(new Linked_ships(1));
+    ship_list.push_back(new Linked_ships(1));
+    ship_list.push_back(new Linked_ships(1));
+    ship_list.push_back(new Linked_ships(1));
+    */
 
     cout << endl;
 
