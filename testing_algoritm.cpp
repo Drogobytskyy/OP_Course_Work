@@ -134,50 +134,60 @@ bool has_nearby_ship(int x, int y, int play_zone[7][9]) {
     return false;
 }
 
-bool try_place_ship(int play_zone[7][9], Ship* current, int data) {
+bool try_place_ship(int play_zone[7][9], Ship* current) {
     for (int x = 0; x < 7; x++) {
         for (int y = 0; y < 9; y++) {
 
-            Ship* cursor = current;
-            int temp_zone[7][9];
-            copy_zone(play_zone, temp_zone);
+            if (!is_valid(&play_zone[x][y]) || has_nearby_ship(x, y, play_zone)) {
+                continue;
+            }
 
-            if (cursor != nullptr && is_valid(&temp_zone[x][y]) && !has_nearby_ship(x, y, temp_zone)) {
-                temp_zone[x][y] = cursor->data;
-                cursor = cursor->next;
+            int length = 0;
+            Ship* temp = current;
+            while (temp != nullptr) {
+                length++;
+                temp = temp->next;
+            }
 
-                if (cursor != nullptr && is_inside_zone(x + 1, y) && is_valid(&temp_zone[x + 1][y]) && temp_zone[x][y] == data) {
-                    for (int x2 = x + 1; x2 < 7; x2++) {
-                        if (temp_zone[x2][y] == SPECIAL) break;
-
-                        if (is_valid(&temp_zone[x2][y])) {
-                            temp_zone[x2][y] = cursor->data;
-                            cursor = cursor->next;
-                            if (cursor == nullptr) break;
-                        }
-                    }
-                }else if(cursor != nullptr && is_inside_zone(x, y + 1) && is_valid(&temp_zone[x][y + 1]) && temp_zone[x][y] == data){
-                    for (int y2 = y + 1; y2 < 9; y2++) {
-                        if (temp_zone[x][y2] == SPECIAL) break;
-
-                        if (is_valid(&temp_zone[x][y2])) {
-                            temp_zone[x][y2] = cursor->data;
-                            cursor = cursor->next;
-                            if (cursor == nullptr) break;
-                        }
-                    }
-                }
-
-                
-
-                if (cursor == nullptr) {
-                    copy_zone(temp_zone, play_zone);  
-                    return true;
+            bool can_place_vertically = true;
+            for (int i = 0; i < length; ++i) {
+                int xi = x + i;
+                if (xi >= 7 || !is_inside_zone(xi, y) || !is_valid(&play_zone[xi][y]) || has_nearby_ship(xi, y, play_zone)) {
+                    can_place_vertically = false;
+                    break;
                 }
             }
+
+            if (can_place_vertically) {
+                Ship* cursor = current;
+                for (int i = 0; i < length; ++i) {
+                    play_zone[x + i][y] = cursor->data;
+                    cursor = cursor->next;
+                }
+                return true;
+            }
+
+            bool can_place_horizontally = true;
+            for (int i = 0; i < length; ++i) {
+                int yi = y + i;
+                if (yi >= 9 || !is_inside_zone(x, yi) || !is_valid(&play_zone[x][yi]) || has_nearby_ship(x, yi, play_zone)) {
+                    can_place_horizontally = false;
+                    break;
+                }
+            }
+
+            if (can_place_horizontally) {
+                Ship* cursor = current;
+                for (int i = 0; i < length; ++i) {
+                    play_zone[x][y + i] = cursor->data;
+                    cursor = cursor->next;
+                }
+                return true;
+            }
+
         }
     }
-    return false;  
+    return false;
 }
 
 
@@ -189,12 +199,9 @@ void place_ships_on_map(int play_zone[7][9], ship_vector &ship_list) {
         int backup_zone[7][9];
         copy_zone(play_zone, backup_zone);
 
-        if (try_place_ship(play_zone, current, current->data)) {
+        if (try_place_ship(play_zone, current)) {
             ship_index++; 
         } else {
-            cout << "Retrying placement for ship of size " << current->data << "...\n";
-            copy_zone(backup_zone, play_zone); 
-            
             break;
         }
     }
