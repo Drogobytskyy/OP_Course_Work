@@ -23,12 +23,13 @@ int play_zone[7][9] = {
     { INVALID, VALID, VALID, VALID, INVALID, INVALID, INVALID, INVALID, INVALID,}
 };
 
-void print(int play_zone[7][9]){
+static int g_ship_placing_counter = 0;
+static int g_ship_deleting_counter = 0;
 
+void print(int play_zone[7][9]){
     for(int i = 0; i < 7; i++){
         cout << endl;
         for(int j = 0; j < 9; j++){
-
             if(play_zone[i][j] == SPECIAL){
                 cout << "  -  "; 
             }else{
@@ -40,7 +41,6 @@ void print(int play_zone[7][9]){
 }
 
 void copy_zone(int src[7][9], int dest[7][9]) {
-
     for (int i = 0; i < 7; i++) {
         for (int j = 0; j < 9; j++) {
             dest[i][j] = src[i][j];
@@ -59,9 +59,7 @@ class Linked_ships{
     public:
         Linked_ships(int n) {
             head = nullptr;
-
             for(int i = 0; i < n; i++){
-
                 Ship *newShip = new Ship();
                 newShip->data = n;
                 newShip->next = head;
@@ -71,31 +69,21 @@ class Linked_ships{
 
         ~Linked_ships(){
             Ship *current = head;
-
             while(current){
                 Ship* temp = current;
                 current = current->next;
                 delete temp;
             }
-
         }
 
         void show_ship();
-
-        int get_data() const {
-            return head ? head->data : -1;
-        }
-
-        Ship* get_head() const {
-            return head;
-        }
+        int get_data() const { return head ? head->data : -1; }
+        Ship* get_head() const { return head; }
 };
 
 void Linked_ships::show_ship(){
-
     Ship *current = head;
     while(current){
-
         cout << current->data;  
         current = current->next;
         if(current){
@@ -107,18 +95,16 @@ void Linked_ships::show_ship(){
 
 typedef vector<Linked_ships*> ship_vector;
 
-// check if INSIDE
 bool is_inside_zone(int x, int y) {
     return x >= 0 && x < 7 && y >= 0 && y < 9;
 }
 
-// check if VALID
-bool is_valid(int *zone){
+bool is_valid(int *zone) {
     return *zone == VALID;
 }
-// check if SHIP
-bool is_ship(int *zone){
-    return *zone != VALID && *zone != INVALID && *zone !=SPECIAL;
+
+bool is_ship(int *zone) {
+    return *zone != VALID && *zone != INVALID && *zone != SPECIAL;
 }
 
 bool has_nearby_ship(int x, int y, int play_zone[7][9]) {
@@ -136,132 +122,95 @@ bool has_nearby_ship(int x, int y, int play_zone[7][9]) {
     return false;
 }
 
-bool try_place_ship(int play_zone[7][9], Ship* current) {
+bool place_ship_if_possible(int play_zone[7][9], Linked_ships* ship, int x, int y, bool vertical, int &ships_placed_count) {
+    int length = ship->get_data();
+    
+    if (vertical) {
+        if (x + length > 7) {
+            return false;
+        }
+        
+        for (int i = 0; i < length; ++i) {
+            if (!is_valid(&play_zone[x + i][y]) || has_nearby_ship(x + i, y, play_zone)) {
+                return false;
+            }
+        }
+
+        for (int i = 0; i < length; ++i) {
+            play_zone[x + i][y] = ship->get_data();
+        }
+        
+        ships_placed_count++;
+        
+        return true;
+
+    } else {
+
+        if (y + length > 9) {
+            return false;
+        }
+
+        for (int i = 0; i < length; ++i) {
+            if (!is_valid(&play_zone[x][y + i]) || has_nearby_ship(x, y + i, play_zone)) {
+                return false;
+            }
+        }
+
+        for (int i = 0; i < length; ++i) {
+            play_zone[x][y + i] = ship->get_data();
+        }
+        
+        ships_placed_count++;
+
+        return true;
+    }
+}
+
+bool remove_ship(int play_zone[7][9], Linked_ships* ship, int x, int y, bool vertical, int &ships_placed_count) {
+    int length = ship->get_data();
+
+    if (vertical) {
+        for (int i = 0; i < length; ++i) {
+            play_zone[x + i][y] = VALID;
+        }
+    } else {
+        for (int i = 0; i < length; ++i) {
+            play_zone[x][y + i] = VALID;
+        }
+    }
+   
+    ships_placed_count--;
+    g_ship_deleting_counter++;
+
+    return true;
+}
+
+bool place_all_ships(int play_zone[7][9], ship_vector& ship_list, int idx, int &ships_placed_count) {
+    if (idx == (int)ship_list.size()) return true;
+
+    Linked_ships* ship = ship_list[idx];
+    
     for (int x = 0; x < 7; x++) {
         for (int y = 0; y < 9; y++) {
-
-            if (!is_valid(&play_zone[x][y]) || has_nearby_ship(x, y, play_zone)) {
-                continue;
-            }
-
-            int length = 0;
-            Ship* temp = current;
-            while (temp != nullptr) {
-                length++;
-                temp = temp->next;
-            }
-
-            bool can_place_vertically = true;
-            for (int i = 0; i < length; ++i) {
-
-                int xi = x + i;
-                if (xi >= 7 || !is_inside_zone(xi, y) || !is_valid(&play_zone[xi][y]) || has_nearby_ship(xi, y, play_zone)) {
-                    can_place_vertically = false;
-                    break;
+            if (place_ship_if_possible(play_zone, ship, x, y, true, ships_placed_count)) {
+                g_ship_placing_counter++;
+                if (place_all_ships(play_zone, ship_list, idx + 1, ships_placed_count)) {
+                    return true;
                 }
+                remove_ship(play_zone, ship, x, y, true, ships_placed_count);
             }
-
-            if (can_place_vertically) {
-
-                Ship* cursor = current;
-                for (int i = 0; i < length; ++i) {
-                    play_zone[x + i][y] = cursor->data;
-                    cursor = cursor->next;
+            if (place_ship_if_possible(play_zone, ship, x, y, false, ships_placed_count)) {
+                g_ship_placing_counter++;
+                if (place_all_ships(play_zone, ship_list, idx + 1, ships_placed_count)) {
+                    return true;
                 }
-                return true;
-            }
-
-            bool can_place_horizontally = true;
-            for (int i = 0; i < length; ++i) {
-
-                int yi = y + i;
-                if (yi >= 9 || !is_inside_zone(x, yi) || !is_valid(&play_zone[x][yi]) || has_nearby_ship(x, yi, play_zone)) {
-                    can_place_horizontally = false;
-                    break;
-                }
-            }
-
-            if (can_place_horizontally) {
-
-                Ship* cursor = current;
-                for (int i = 0; i < length; ++i) {
-                    play_zone[x][y + i] = cursor->data;
-                    cursor = cursor->next;
-                }
-                return true;
-            }
-
-        }
-    }
-    return false;
-}
-
-void place_ships_on_map(int play_zone[7][9], ship_vector &ship_list) {
-    int ship_index = 0;
-    
-    while (ship_index < (int)ship_list.size()) {
-
-        Ship* current = ship_list[ship_index]->get_head();
-        int backup_zone[7][9];
-        copy_zone(play_zone, backup_zone);
-
-        if (try_place_ship(play_zone, current)) {
-            ship_index++; 
-        } else {
-            break;
-        }
-    }
-    
-}
-bool try_all_random_permutations(ship_vector& ship_list, int play_zone[7][9]) {
-    vector<int> lengths;
-    for (Linked_ships* ship : ship_list) {
-        lengths.push_back(ship->get_data());
-    }
-
-    unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-    mt19937 rng(seed);
-
-    int attempts = 0;
-
-    while (true) {
-        shuffle(lengths.begin(), lengths.end(), rng);
-        ship_vector permuted;
-
-        for (int len : lengths) {
-            permuted.push_back(new Linked_ships(len));
-        }
-
-        int temp_zone[7][9];
-        copy_zone(play_zone, temp_zone);
-
-        bool success = true;
-        for (Linked_ships* ship : permuted) {
-            if (!try_place_ship(temp_zone, ship->get_head())) {
-                success = false;
-                break;
+                remove_ship(play_zone, ship, x, y, false, ships_placed_count);
             }
         }
-
-        attempts++;
-
-        if (success) {
-            copy_zone(temp_zone, play_zone);
-            cout << "\nSolution found in " << attempts << " attempts:" << endl;
-            for (int len : lengths) {
-                cout << len << " ";
-            }
-            cout << "\n";
-            for (Linked_ships* sh : permuted) delete sh;
-            return true;
-        }
-
-        for (Linked_ships* sh : permuted) delete sh;
     }
 
     return false;
 }
-
 
 int main(void){
     cout << endl;
@@ -277,33 +226,28 @@ int main(void){
     ship_list.push_back(new Linked_ships(1));
     ship_list.push_back(new Linked_ships(1));
     ship_list.push_back(new Linked_ships(1));
-    
+
     cout << endl;
 
     print(play_zone);
     cout << endl;
 
-    for (int i = 0; i < 5; i++) {
-        int temp_zone[7][9]; 
-        copy_zone(play_zone, temp_zone);
-    
-        cout << "Attempt " << i + 1 << ":\n";
-        if (try_all_random_permutations(ship_list, temp_zone)) {
-            cout << "EXCELLENT" << endl;
-        } else {
-            cout << "ERROR." << endl;
-        }
-    
-        print(temp_zone);
-        cout << endl; 
+    int temp_zone[7][9]; 
+    copy_zone(play_zone, temp_zone);
+
+    int ships_placed_count = 0;
+
+    if (place_all_ships(temp_zone, ship_list, 0, ships_placed_count)) {
+        cout << "Ships placed successfully!" << endl;
+    } else {
+        cout << "ERROR." << endl;
     }
-    
 
+    print(temp_zone);
+    cout << "Total ships placed: " << g_ship_placing_counter << endl;
+    cout << "Total ships deleted: " << g_ship_deleting_counter << endl;
     cout << endl;
 
-    print(play_zone);
-
-    // ships deleting
     for (Linked_ships* sh : ship_list) {
         delete sh;
     }
