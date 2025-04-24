@@ -156,7 +156,19 @@ bool try_place_ship(int play_zone[7][9], Ship* current, int data) {
                             if (cursor == nullptr) break;
                         }
                     }
+                }else if(cursor != nullptr && is_inside_zone(x, y + 1) && is_valid(&temp_zone[x][y + 1]) && temp_zone[x][y] == data){
+                    for (int y2 = y + 1; y2 < 9; y2++) {
+                        if (temp_zone[x][y2] == SPECIAL) break;
+
+                        if (is_valid(&temp_zone[x][y2])) {
+                            temp_zone[x][y2] = cursor->data;
+                            cursor = cursor->next;
+                            if (cursor == nullptr) break;
+                        }
+                    }
                 }
+
+                
 
                 if (cursor == nullptr) {
                     copy_zone(temp_zone, play_zone);  
@@ -171,7 +183,7 @@ bool try_place_ship(int play_zone[7][9], Ship* current, int data) {
 
 void place_ships_on_map(int play_zone[7][9], ship_vector &ship_list) {
     int ship_index = 0;
-
+    
     while (ship_index < (int)ship_list.size()) {
         Ship* current = ship_list[ship_index]->get_head();
         int backup_zone[7][9];
@@ -193,16 +205,17 @@ int main(void){
     cout << endl;
     ship_vector ship_list;
 
+    ship_list.push_back(new Linked_ships(1));
+    ship_list.push_back(new Linked_ships(3));
+    ship_list.push_back(new Linked_ships(1));
+    ship_list.push_back(new Linked_ships(2));
+    ship_list.push_back(new Linked_ships(2));
+    ship_list.push_back(new Linked_ships(1));
+    ship_list.push_back(new Linked_ships(2));
+    ship_list.push_back(new Linked_ships(1));
     ship_list.push_back(new Linked_ships(4));
     ship_list.push_back(new Linked_ships(3));
-    ship_list.push_back(new Linked_ships(3));
-    ship_list.push_back(new Linked_ships(2));
-    ship_list.push_back(new Linked_ships(2));
-    ship_list.push_back(new Linked_ships(2));
-    ship_list.push_back(new Linked_ships(1));
-    ship_list.push_back(new Linked_ships(1));
-    ship_list.push_back(new Linked_ships(1));
-    ship_list.push_back(new Linked_ships(1));
+
 
     // ships output
     for(Linked_ships *sh : ship_list){
