@@ -24,5 +24,6 @@ class Linked_ships{
         Ship* get_head() const;
 };
 
+typedef std::vector<Linked_ships*> ship_vector;
 
 #endif
