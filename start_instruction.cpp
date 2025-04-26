@@ -61,35 +61,36 @@ void Start_instruction::custom_only_text(const string &message){
 void Start_instruction::show_ships() {
 
     // one-sector ship
-    vector<string> one_column_ship;
-    one_column_ship.push_back("*****     ----------");
-    one_column_ship.push_back("| 1 |  -  four ships");
-    one_column_ship.push_back("*****     ----------");
+    vector<string> one_column_ship = {
+        "*****     ----------",
+        "| 1 |  -  four ships",
+        "*****     ----------"
+    };
 
     // two-sector ship
-    vector<string> two_column_ship;
-    two_column_ship.push_back("*********    -----------");
-    two_column_ship.push_back("| 2 | 2 |  - three ships");
-    two_column_ship.push_back("*********    -----------");
+    vector<string> two_column_ship = {
+        "*********    -----------",
+        "| 2 | 2 |  - three ships",
+        "*********    -----------"
+    };
 
     // three-sector ship
-    vector<string> three_column_ship;
-    three_column_ship.push_back("*************    ---------");
-    three_column_ship.push_back("| 3 | 3 | 3 |  - two ships");
-    three_column_ship.push_back("*************    ---------");
+    vector<string> three_column_ship = {
+        "*************    ---------",
+        "| 3 | 3 | 3 |  - two ships",
+        "*************    ---------"
+    };
 
     // four-sector ship
-    vector<string> four_column_ship;
-    four_column_ship.push_back("*****************    --------");
-    four_column_ship.push_back("| 4 | 4 | 4 | 4 |  - one ship");
-    four_column_ship.push_back("*****************    --------");
+    vector<string> four_column_ship = {
+        "*****************    --------",
+        "| 4 | 4 | 4 | 4 |  - one ship",
+        "*****************    --------"
+    };
 
-    // all ships
-    vector<vector<string> > ships;  
-    ships.push_back(one_column_ship);
-    ships.push_back(two_column_ship);
-    ships.push_back(three_column_ship);
-    ships.push_back(four_column_ship);
+    vector<vector<string> > ships = {
+        one_column_ship, two_column_ship, three_column_ship, four_column_ship
+    };  
 
     for(int i = 0; i < (int)ships.size(); i++){
         show_message_block(ships[i]);
@@ -99,21 +100,22 @@ void Start_instruction::show_ships() {
 void Start_instruction::show_squares() {
 
     // green square
-    vector<string> yes_square;
-    yes_square.push_back("\033[32m*****   -------------\033[0m");
-    yes_square.push_back("\033[32m|   | - Can be placed\033[0m");
-    yes_square.push_back("\033[32m*****   -------------\033[0m");
+    vector<string> yes_square = {
+        "\033[32m*****   -------------\033[0m",
+        "\033[32m|   | - Can be placed\033[0m",
+        "\033[32m*****   -------------\033[0m"
+    };
 
     // red square
-    vector<string> no_square;
-    no_square.push_back("\033[31m*****   -----------------\033[0m");
-    no_square.push_back("\033[31m| \u2248 | - against the rules\033[0m");
-    no_square.push_back("\033[31m*****   -----------------\033[0m");
-
-    // both squares
-    vector<vector<string> > squares;
-    squares.push_back(yes_square);
-    squares.push_back(no_square);
+    vector<string> no_square = {
+        "\033[31m*****   -----------------\033[0m",
+        "\033[31m| \u2248 | - against the rules\033[0m",
+        "\033[31m*****   -----------------\033[0m"
+    };
+   
+    vector<vector<string> > squares = {
+        yes_square, no_square
+    };
 
     for (int i = 0; i < (int)squares.size();i++){
         show_message_block(squares[i]);
@@ -138,30 +140,24 @@ void Start_instruction::show() {
     const string s14 = "Type: (1) or \"start\" | (2) or \"exit\"";
 
     // vector of first part
-    vector<string> first_message;
-    first_message.push_back(s1);
-    first_message.push_back(s2);
-    first_message.push_back(s3);
-    first_message.push_back(s4);
-    first_message.push_back(s5);
-    first_message.push_back(s6);
-    first_message.push_back(s7);
+    vector<string> first_message = {
+        s1, s2, s3, s4, s5, s6, s7
+    };
 
     // vector of second part
-    vector<string> second_message;
-    second_message.push_back(s8);
-    second_message.push_back(s9);
+    vector<string> second_message = {
+        s8, s9
+    };
     
     // vector of third part
-    vector<string> third_message;
-    third_message.push_back(s10);
-    third_message.push_back(s11);
-    third_message.push_back(s12);
+    vector<string> third_message = {
+        s10, s11, s12
+    };
 
     // vector of fourth part
-    vector<string> fourth_message;
-    fourth_message.push_back(s13);
-    fourth_message.push_back(s14);
+    vector<string> fourth_message = {
+        s13, s14
+    };
 
     up_bottom_fill();
     show_message_block(first_message);
