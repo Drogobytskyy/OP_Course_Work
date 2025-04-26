@@ -9,3 +9,5 @@ int g_play_zone[7][9] = {
     { INVALID, VALID, VALID, VALID, VALID, VALID, INVALID, INVALID, INVALID },
     { INVALID, VALID, VALID, VALID, INVALID, INVALID, INVALID, INVALID, INVALID,}
 };
+
+std::vector<std::string> vec_st_zone;

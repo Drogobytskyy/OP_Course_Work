@@ -2,18 +2,23 @@
 #define GAME_ZONE_H
 
 #include <iostream>
+#include <vector>
+#include <string>
 #include "globals.h"
 #include "ship_struct.h"
+#include "start_instruction.h"
+
 
 class Game_zone{
-    int play_zone[7][9];
-    int ship_placing_counter = 0;
-    int ship_deleting_counter = 0;
+    private:
+        int play_zone[7][9];
+        int ship_placing_counter = 0;
+        int ship_deleting_counter = 0;
 
     public:
         Game_zone();
 
-        void print(int play_zone[7][9]);
+        void print(int play_zone[7][9], Start_instruction& instruction);
         void copy_zone(int src[7][9], int dest[7][9]);
 
         bool is_inside_zone(int x, int y);

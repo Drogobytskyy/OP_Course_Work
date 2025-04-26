@@ -1,4 +1,5 @@
 #include "game_zone.h"
+using namespace std; 
 
 Game_zone :: Game_zone(){
 
@@ -9,18 +10,42 @@ Game_zone :: Game_zone(){
     }
 }
 
-void Game_zone :: print(int play_zone[7][9]){
-    for(int i = 0; i < 7; i++){
-        std::cout << std::endl;
-        for(int j = 0; j < 9; j++){
-            if(play_zone[i][j] == SPECIAL){
-                std::cout << "  -  "; 
-            }else{
-                std::cout << "  " << play_zone[i][j] << "  ";
+
+void Game_zone::print(int play_zone[7][9], Start_instruction& instruction) {
+    instruction.up_bottom_fill();
+
+    vec_st_zone.clear(); 
+
+    for (int i = 0; i < 7; i++) {
+        string line1 = "";
+        string line2 = "";
+        string line3 = "";
+
+        for (int j = 0; j < 9; j++) {
+            if (play_zone[i][j] == 0) {
+                line1 += "     ";
+                line2 += "     ";
+                line3 += "     ";
+            } else if (play_zone[i][j] == 9) {
+                line1 += "*****";
+                line2 += "|   |";
+                line3 += "*****";
+            } else {
+                line1 += "*****";
+                line2 += "| \u2248 |";
+                line3 += "*****";
             }
         }
-        std::cout << std::endl;
+        vec_st_zone.push_back(line1);
+        vec_st_zone.push_back(line2);
+        vec_st_zone.push_back(line3);
     }
+
+    for (int i = 0; i < (int)vec_st_zone.size(); i++) {
+        instruction.controlled_output(vec_st_zone[i]);
+    }
+
+    instruction.up_bottom_fill();
 }
 
 void Game_zone :: copy_zone(int src[7][9], int dest[7][9]) {

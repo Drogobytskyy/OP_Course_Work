@@ -4,7 +4,7 @@
 #define BORDER '|'
 using namespace std;
 
-void Start_instruction::up_bottom_fill() {
+void Start_instruction :: up_bottom_fill() {
     cout << " ";
     for (int i = 0; i < WIDTH - 1; ++i) {
         cout << "-";
@@ -12,7 +12,7 @@ void Start_instruction::up_bottom_fill() {
     cout << "\n";
 }
 
-void Start_instruction::controlled_output(const string& s) {
+void Start_instruction :: controlled_output(const string& s) {
 
     int space_betw = (WIDTH - s.length() - 1) / 2;
     int totalLength = (space_betw * 2) + s.length() + 1;
@@ -38,27 +38,27 @@ void Start_instruction::controlled_output(const string& s) {
     cout << endl;
 }
 
-void Start_instruction::show_message_block(const vector<string>& messages) {
+void Start_instruction :: show_message_block(const vector<string>& messages) {
     for(int i = 0; i < (int)messages.size(); i++){
         controlled_output(messages[i]);
     }
 }
 
-void Start_instruction::custom_message(const string &message){
+void Start_instruction :: custom_message(const string &message){
     up_bottom_fill();
     controlled_output(message);
     up_bottom_fill();
 }
 
-void Start_instruction::up_and_bot(){
+void Start_instruction :: up_and_bot(){
     up_bottom_fill();
 }
 
-void Start_instruction::custom_only_text(const string &message){
+void Start_instruction :: custom_only_text(const string &message){
     controlled_output(message);
 }
 
-void Start_instruction::show_ships() {
+void Start_instruction :: show_ships() {
 
     // one-sector ship
     vector<string> one_column_ship = {
@@ -97,7 +97,7 @@ void Start_instruction::show_ships() {
     }
 }
 
-void Start_instruction::show_squares() {
+void Start_instruction :: show_squares() {
 
     // green square
     vector<string> yes_square = {
@@ -123,7 +123,7 @@ void Start_instruction::show_squares() {
         
 }
 
-void Start_instruction::show() {
+void Start_instruction :: show() {
     const string s1 = "I welcome you into my coursework project!";
     const string s2 = "We will see the result of task2 solution";
     const string s3 = "Task is to place ships in the right way";
@@ -171,3 +171,4 @@ void Start_instruction::show() {
     up_bottom_fill();
 
 }
+
