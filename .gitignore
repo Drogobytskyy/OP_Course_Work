@@ -3,10 +3,7 @@
 /output/
 .vscode/
 
-myprog
+course
 *.exe
 *.out
 
-myalg
-*.exe
-*.out
