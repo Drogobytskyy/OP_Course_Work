@@ -5,7 +5,7 @@
 
 enum g_CellState {
     INVALID = 0,
-    SPECIAL = -1,
+    SPECIAL = 7,
     VALID = 9
 };
 

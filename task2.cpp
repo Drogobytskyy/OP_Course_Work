@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <cctype>
 #include <cstdlib>
+#include <chrono>
+#include <thread>
 
 #include "start_instruction.h"
 #include "globals.h"
@@ -35,6 +37,15 @@ string get_valid_input(Start_instruction &instruction) {
     }
 }
 
+void processing_time_spend(){
+    cout << "Loading";
+    for (int i = 0; i < 5; ++i) {
+        cout << "."; 
+        cout.flush();     
+        this_thread::sleep_for(chrono::seconds(1)); 
+    }
+}
+
 int main(void) {
     cout << endl;
 
@@ -50,16 +61,23 @@ int main(void) {
         instruction.custom_only_text("So, let's look what field do we have!");
         instruction.up_and_bot();
 
-        game.print(g_play_zone, instruction);
-        //int temp_zone[7][9]; 
-       // game.copy_zone(g_play_zone, temp_zone);
-        //int ships_placed_count = 0;
-        /*if (game.place_all_ships(temp_zone, game.ship_list, 0, ships_placed_count)) {
+        game.print_start_zone(g_play_zone, instruction);
+        int temp_zone[7][9]; 
+        game.copy_zone(g_play_zone, temp_zone);
+        int ships_placed_count = 0;
+
+        if (game.place_all_ships(temp_zone, game.ship_list, 0, ships_placed_count)) {
+            cout << "So program starts and need some time" << endl;
+            processing_time_spend();
             cout << "Ships placed successfully!" << endl;
+            processing_time_spend();
+            instruction.clear_screen();
+            game.print_final_zone(temp_zone, instruction);
         } else {
             cout << "ERROR." << endl;
         }
-        game.print(temp_zone);
+        
+        /*
         cout << "Total ships placed: " << game.get_ship_placing_counter() << endl;
         cout << "Total ships deleted: " << game.get_ship_deleting_counter() << endl;
         cout << endl;

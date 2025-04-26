@@ -18,8 +18,9 @@ class Game_zone{
     public:
         Game_zone();
 
-        void print(int play_zone[7][9], Start_instruction& instruction);
+        void print_start_zone(int play_zone[7][9], Start_instruction& instruction);
         void copy_zone(int src[7][9], int dest[7][9]);
+        void print_final_zone(int play_zone[7][9], Start_instruction& instruction);
 
         bool is_inside_zone(int x, int y);
         bool is_ship(int *zone);
