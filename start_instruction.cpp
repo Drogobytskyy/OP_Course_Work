@@ -136,8 +136,6 @@ void Start_instruction :: show() {
     const string s10 = "Also we have approximately equal sing:";
     const string s11 = "\u2248";
     const string s12 = "We cant place ship into square with this sign!";
-    const string s13 = "If you undestood everything do you want to start?";
-    const string s14 = "Type: (1) or \"start\" | (2) or \"exit\"";
 
     // vector of first part
     vector<string> first_message = {
@@ -154,11 +152,6 @@ void Start_instruction :: show() {
         s10, s11, s12
     };
 
-    // vector of fourth part
-    vector<string> fourth_message = {
-        s13, s14
-    };
-
     up_bottom_fill();
     show_message_block(first_message);
     up_bottom_fill();
@@ -166,8 +159,6 @@ void Start_instruction :: show() {
     show_ships();
     show_message_block(third_message);
     show_squares();
-    up_bottom_fill();
-    show_message_block(fourth_message);
     up_bottom_fill();
 
 }

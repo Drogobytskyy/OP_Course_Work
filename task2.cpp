@@ -13,6 +13,7 @@
 #include "game.h"
 
 using namespace std;
+using namespace chrono;
 
 bool is_valid_input(const string& input) {
     return input == "1" || input == "start" || input == "2" || input == "exit";
@@ -49,46 +50,92 @@ void processing_time_spend(){
 int main(void) {
     cout << endl;
 
+    auto start_time = high_resolution_clock::now();
+
     Start_instruction instruction;
     Game game;
+
     instruction.show();  
-    
+    instruction.up_and_bot();
+
+    instruction.custom_only_text("If you undestood everything do you want to start?");
+    instruction.custom_only_text("Type: (1) or \"start\" | (2) or \"exit\"");
+
+    instruction.up_and_bot();
+
     string choice = get_valid_input(instruction);
 
     if(choice == "1" || choice == "start"){
         instruction.clear_screen();
+
         instruction.custom_message("Let's start!");
         instruction.custom_only_text("So, let's look what field do we have!");
+
         instruction.up_and_bot();
 
         game.print_start_zone(g_play_zone, instruction);
+
+        while(true){
+            instruction.custom_only_text("Did you understand the rules?");
+            instruction.up_and_bot();
+
+            instruction.custom_only_text("If you undestood everything do you want to start?");
+            instruction.custom_only_text("Type: (1) or \"start\" | (2) or \"exit\"");
+
+            instruction.up_and_bot();
+
+            string choice_to_continue = get_valid_input(instruction);
+
+            if(choice_to_continue == "1" || choice == "start"){
+
+                instruction.custom_message("So program starts and need some time");
+                break;
+
+            }else if(choice_to_continue == "exit"){
+
+                instruction.custom_message("Goodbye! Hope we will meet again!");
+                exit(1);
+            }else{
+                instruction.clear_screen();
+                instruction.show();
+            }
+        }
+
         int temp_zone[7][9]; 
         game.copy_zone(g_play_zone, temp_zone);
         int ships_placed_count = 0;
 
         if (game.place_all_ships(temp_zone, game.ship_list, 0, ships_placed_count)) {
-            cout << "So program starts and need some time" << endl;
+
             processing_time_spend();
-            cout << "Ships placed successfully!" << endl;
+            cout << " \033[32m Ships placed successfully!\033[0m" << endl;
+
             processing_time_spend();
             instruction.clear_screen();
+            instruction.custom_message("Now you can see the result!");
             game.print_final_zone(temp_zone, instruction);
+
+            instruction.custom_message("And final EXTRA informations:");
+            int placed = game.get_ship_placing_counter();
+            int deleted = game.get_ship_deleting_counter();
+
+            instruction.custom_only_text("By the time algoritm worked");
+            instruction.custom_only_text("Total ships was placed: " + to_string(placed));
+            instruction.custom_only_text("Total ships was removed: " + to_string(deleted));
+
+            auto end_time = high_resolution_clock::now();
+            auto duration = duration_cast<seconds>(end_time - start_time);
+            instruction.custom_only_text("Program worked for: " + to_string(duration.count()) + " seconds");
+            instruction.up_and_bot();
+            
         } else {
             cout << "ERROR." << endl;
         }
         
-        /*
-        cout << "Total ships placed: " << game.get_ship_placing_counter() << endl;
-        cout << "Total ships deleted: " << game.get_ship_deleting_counter() << endl;
-        cout << endl;
-        */
-
     }else{
         instruction.custom_message("Goodbye! Hope we will meet again!");
         return 0;
     }
-
-  
 
     cout << endl;
     return 0;
