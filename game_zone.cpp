@@ -32,7 +32,7 @@ void Game_zone::print_start_zone(int play_zone[7][9], Start_instruction& instruc
                 line3 += "*****";
             } else {
                 line1 += "*****";
-                line2 += "| \u2248 |";
+                line2 += "| \033[31m\u2248\033[0m |";
                 line3 += "*****";
             }
         }
@@ -65,7 +65,7 @@ void Game_zone::print_final_zone(int play_zone[7][9], Start_instruction& instruc
                 line3 += "     ";
             } else if (play_zone[i][j] == 7) {
                 line1 += "*****";
-                line2 += "| \u2248 |";
+                line2 += "| \033[31m\u2248\033[0m |";
                 line3 += "*****";
             } else if (play_zone[i][j] == 9){
                 line1 += "*****";

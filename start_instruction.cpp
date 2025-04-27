@@ -7,7 +7,7 @@ using namespace std;
 void Start_instruction :: up_bottom_fill() {
     cout << " ";
     for (int i = 0; i < WIDTH - 1; ++i) {
-        cout << "-";
+        cout << "\033[33m" << "-" << "\033[0m";
     }
     cout << "\n";
 }
@@ -23,16 +23,16 @@ void Start_instruction :: controlled_output(const string& s) {
 
     if (s.find("[0m") != string::npos) {
         space_betw += 4;
-        cout << BORDER << string(space_betw, ' ') << s << string(space_betw + 1, ' ') << BORDER;
+        cout << "\033[33m" << BORDER << "\033[0m" << string(space_betw, ' ') << s << string(space_betw + 1, ' ') << "\033[33m" << BORDER << "\033[0m";
 
     }else if (totalLength != WIDTH) {
         if (totalLength > WIDTH)
-            cout << BORDER << string(space_betw, ' ') << s << string(space_betw - 1, ' ') << BORDER;
+            cout << "\033[33m" << BORDER << "\033[0m" << string(space_betw, ' ') << s << string(space_betw - 1, ' ') << "\033[33m" << BORDER << "\033[0m";
         else
-            cout << BORDER << string(space_betw, ' ') << s << string(space_betw + 1, ' ') << BORDER;
+            cout << "\033[33m" << BORDER << "\033[0m" << string(space_betw, ' ') << s << string(space_betw + 1, ' ') << "\033[33m" << BORDER << "\033[0m";
             
     }else {
-        cout << BORDER << string(space_betw, ' ') << s << string(space_betw, ' ') << BORDER;
+        cout << "\033[33m" << BORDER << "\033[0m" << string(space_betw, ' ') << s << string(space_betw, ' ') << "\033[33m" << BORDER << "\033[0m";
     }
 
     cout << endl;
