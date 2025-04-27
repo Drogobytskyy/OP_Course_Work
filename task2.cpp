@@ -10,7 +10,7 @@
 #include "start_instruction.h"
 #include "globals.h"
 #include "ship_struct.h"
-#include "game_zone.h"
+#include "game.h"
 
 using namespace std;
 
