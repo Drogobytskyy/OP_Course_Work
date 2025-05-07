@@ -7,3 +7,6 @@ course
 *.exe
 *.out
 
+test
+*.exe
+*.out
