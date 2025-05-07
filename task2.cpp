@@ -76,17 +76,18 @@ int main(void) {
         game.print_start_zone(g_play_zone, instruction);
 
         while(true){
+            instruction.up_and_bot();
             instruction.custom_only_text("Did you understand the rules?");
             instruction.up_and_bot();
 
             instruction.custom_only_text("If you undestood everything do you want to start?");
-            instruction.custom_only_text("Type: (1) or \"start\" | (2) or \"exit\"");
+            instruction.custom_only_text("Type: (1) or \"start\" | (2) - to see instructin again or \"exit\"");
 
             instruction.up_and_bot();
 
             string choice_to_continue = get_valid_input(instruction);
 
-            if(choice_to_continue == "1" || choice == "start"){
+            if(choice_to_continue == "1" || choice_to_continue == "start"){
 
                 instruction.custom_message("So program starts and need some time");
                 break;
@@ -98,6 +99,26 @@ int main(void) {
             }else{
                 instruction.clear_screen();
                 instruction.show();
+                instruction.custom_only_text("If you undestood everything do you want to start?");
+                instruction.custom_only_text("Type: (1) or \"start\" | (2) - to see field again or \"exit\"");
+                instruction.up_bottom_fill();
+
+                string choice_of_choices = get_valid_input(instruction);
+
+                if(choice_of_choices == "2"){
+
+                    instruction.clear_screen();
+                    instruction.up_bottom_fill();
+                    instruction.custom_only_text("So, let's look what field do we have!");
+                    game.print_start_zone(g_play_zone, instruction);
+
+                }else if(choice_of_choices == "exit"){
+
+                    instruction.custom_message("Goodbye! Hope we will meet again!");
+                    exit(1);
+                }else{
+                    break;
+                }
             }
         }
 
@@ -115,7 +136,7 @@ int main(void) {
             instruction.custom_message("Now you can see the result!");
             game.print_final_zone(temp_zone, instruction);
 
-            instruction.custom_message("And final EXTRA informations:");
+            instruction.custom_message("EXTRA informations:");
             int placed = game.get_ship_placing_counter();
             int deleted = game.get_ship_deleting_counter();
 
