@@ -1,6 +1,7 @@
 #include "game_zone.h"
 using namespace std; 
 
+// initalizating zone
 Game_zone :: Game_zone(){
 
     for (int i = 0; i < 7; i++) {
@@ -99,14 +100,17 @@ void Game_zone :: copy_zone(int src[7][9], int dest[7][9]) {
     }
 }
 
+// checking is place inside zone
 bool Game_zone :: is_inside_zone(int x, int y) {
     return x >= 0 && x < 7 && y >= 0 && y < 9;
 }
 
+// checking if it is a ship
 bool Game_zone :: is_ship(int *zone) {
     return *zone != VALID && *zone != INVALID && *zone != SPECIAL;
 }
 
+// checking if there ships around
 bool Game_zone :: has_nearby_ship(int x, int y, int play_zone[7][9]) {
     int dx[] = {-1, -1, -1,  0, 0, 1, 1, 1};
     int dy[] = {-1,  0,  1, -1, 1,-1, 0, 1};

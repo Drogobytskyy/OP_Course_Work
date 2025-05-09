@@ -1,5 +1,6 @@
 #include "start_instruction.h"
 
+// we will understang the sceen as a 75 len 
 #define WIDTH 75
 #define BORDER '|'
 using namespace std;
@@ -12,30 +13,39 @@ void Start_instruction :: up_bottom_fill() {
     cout << "\n";
 }
 
-void Start_instruction :: controlled_output(const string& s) {
+// main block for output
+void Start_instruction :: controlled_output(const string& text_to_show) {
 
-    int space_betw = (WIDTH - s.length() - 1) / 2;
-    int totalLength = (space_betw * 2) + s.length() + 1;
+    try{
+        if(text_to_show.length() > 75){
+            throw runtime_error("You try to use too long text");
+        }
+    
+        int space_betw = (WIDTH - text_to_show.length() - 1) / 2;
+        int totalLength = (space_betw * 2) + text_to_show.length() + 1;
 
-    if (s.find("\u2248") != string::npos) {
-        space_betw++;
+        if (text_to_show.find("\u2248") != string::npos) {
+            space_betw++;
+        }
+
+        if (text_to_show.find("[0m") != string::npos) {
+            space_betw += 4;
+            cout << "\033[33m" << BORDER << "\033[0m" << string(space_betw, ' ') << text_to_show << string(space_betw + 1, ' ') << "\033[33m" << BORDER << "\033[0m";
+
+        }else if (totalLength != WIDTH) {
+            if (totalLength > WIDTH)
+                cout << "\033[33m" << BORDER << "\033[0m" << string(space_betw, ' ') << text_to_show << string(space_betw - 1, ' ') << "\033[33m" << BORDER << "\033[0m";
+            else
+                cout << "\033[33m" << BORDER << "\033[0m" << string(space_betw, ' ') << text_to_show << string(space_betw + 1, ' ') << "\033[33m" << BORDER << "\033[0m";
+                
+        }else {
+            cout << "\033[33m" << BORDER << "\033[0m" << string(space_betw, ' ') << text_to_show << string(space_betw, ' ') << "\033[33m" << BORDER << "\033[0m";
+        }
+
+        cout << endl;
+    } catch (const runtime_error& e){
+        cerr << "\033[31mError: " << e.what() << "\033[0m" << endl;
     }
-
-    if (s.find("[0m") != string::npos) {
-        space_betw += 4;
-        cout << "\033[33m" << BORDER << "\033[0m" << string(space_betw, ' ') << s << string(space_betw + 1, ' ') << "\033[33m" << BORDER << "\033[0m";
-
-    }else if (totalLength != WIDTH) {
-        if (totalLength > WIDTH)
-            cout << "\033[33m" << BORDER << "\033[0m" << string(space_betw, ' ') << s << string(space_betw - 1, ' ') << "\033[33m" << BORDER << "\033[0m";
-        else
-            cout << "\033[33m" << BORDER << "\033[0m" << string(space_betw, ' ') << s << string(space_betw + 1, ' ') << "\033[33m" << BORDER << "\033[0m";
-            
-    }else {
-        cout << "\033[33m" << BORDER << "\033[0m" << string(space_betw, ' ') << s << string(space_betw, ' ') << "\033[33m" << BORDER << "\033[0m";
-    }
-
-    cout << endl;
 }
 
 void Start_instruction :: show_message_block(const vector<string>& messages) {
@@ -44,6 +54,7 @@ void Start_instruction :: show_message_block(const vector<string>& messages) {
     }
 }
 
+// method to print any message in box
 void Start_instruction :: custom_message(const string &message){
     up_bottom_fill();
     controlled_output(message);
@@ -54,6 +65,7 @@ void Start_instruction :: up_and_bot(){
     up_bottom_fill();
 }
 
+// if we need only specifie a text this help us
 void Start_instruction :: custom_only_text(const string &message){
     controlled_output(message);
 }

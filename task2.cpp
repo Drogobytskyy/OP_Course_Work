@@ -38,6 +38,7 @@ string get_valid_input(Start_instruction &instruction) {
     }
 }
 
+// just making the view of working
 void processing_time_spend(){
     cout << "Loading";
     for (int i = 0; i < 5; ++i) {
@@ -65,6 +66,7 @@ int main(void) {
 
     string choice = get_valid_input(instruction);
 
+    // starting from here
     if(choice == "1" || choice == "start"){
         instruction.clear_screen();
 
@@ -86,6 +88,8 @@ int main(void) {
             instruction.up_and_bot();
 
             string choice_to_continue = get_valid_input(instruction);
+
+            // under if creating posibillity to swap instruction and field
 
             if(choice_to_continue == "1" || choice_to_continue == "start"){
 
@@ -140,6 +144,7 @@ int main(void) {
             int placed = game.get_ship_placing_counter();
             int deleted = game.get_ship_deleting_counter();
 
+            // extra informations
             instruction.custom_only_text("By the time algoritm worked");
             instruction.custom_only_text("Total ships was placed: " + to_string(placed));
             instruction.custom_only_text("Total ships was removed: " + to_string(deleted));

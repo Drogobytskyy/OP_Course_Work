@@ -1,5 +1,6 @@
 #include "game.h"
 
+// initalizating of ships
 Game :: Game() : Game_zone(){
     
     ship_list = {
@@ -80,6 +81,7 @@ bool Game :: place_ship_if_possible(int play_zone[7][9], Linked_ships* ship, int
     }
 }
 
+// main algotithm 
 bool Game :: place_all_ships(int play_zone[7][9], ship_vector& ship_list, int idx, int &ships_placed_count) {
     if (idx == (int)ship_list.size()) return true;
 
