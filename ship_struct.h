@@ -8,6 +8,12 @@
 #include <vector>
 #include <algorithm>
 
+/* ----------------------------------------------------------------------[<]-
+    Class: Linked_ships
+
+    Synopsis: this header was created for making ships like a 
+    linked-list objects.
+    ---------------------------------------------------------------------[>]-*/
 struct Ship{
     int data;
     Ship *next;

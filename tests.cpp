@@ -2,6 +2,12 @@
 #include <cassert>
 #include <iostream>
 
+
+/*
+    this is special class for testing the algorithm of this program
+    it can be used by special Makefile in this way:
+    make test -> ./test
+*/
 class GameTest {
     public:
         static void test_place_all_ships_success() {

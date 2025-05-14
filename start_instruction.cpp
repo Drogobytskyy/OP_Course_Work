@@ -1,9 +1,15 @@
 #include "start_instruction.h"
 
-// we will understang the sceen as a 75 len 
+// we will understand the sceen as a 75 len 
 #define WIDTH 75
 #define BORDER '|'
 using namespace std;
+
+
+/* ----------------------------------------------------------------------[<]-
+    Function: up_bottom_fill 
+    Synopsis: function for printing up and bottom borders.
+    ---------------------------------------------------------------------[>]-*/
 
 void Start_instruction :: up_bottom_fill() {
     cout << " ";
@@ -13,7 +19,12 @@ void Start_instruction :: up_bottom_fill() {
     cout << "\n";
 }
 
-// main block for output
+/* ----------------------------------------------------------------------[<]-
+    Function: controlled_output 
+    Synopsis: function that handle all the situations with output part
+              in our programm. Work nice and true with color specifications.
+    ---------------------------------------------------------------------[>]-*/
+
 void Start_instruction :: controlled_output(const string& text_to_show) {
 
     try{
@@ -48,6 +59,10 @@ void Start_instruction :: controlled_output(const string& text_to_show) {
     }
 }
 
+
+/* 
+    show_message_block function print vector of messages.
+*/
 void Start_instruction :: show_message_block(const vector<string>& messages) {
     for(int i = 0; i < (int)messages.size(); i++){
         controlled_output(messages[i]);
@@ -136,6 +151,7 @@ void Start_instruction :: show_squares() {
 }
 
 void Start_instruction :: show() {
+    // first text for the instruction.
     const string s1 = "I welcome you into my coursework project!";
     const string s2 = "We will see the result of task2 solution";
     const string s3 = "Task is to place ships in the right way";
@@ -164,6 +180,7 @@ void Start_instruction :: show() {
         s10, s11, s12
     };
 
+    // outputing the instruction.
     up_bottom_fill();
     show_message_block(first_message);
     up_bottom_fill();

@@ -1,5 +1,6 @@
 #include "globals.h"
 
+// our field
 int g_play_zone[7][9] = {
     { INVALID, INVALID, VALID, INVALID, VALID, INVALID, INVALID, INVALID, INVALID },
     { VALID, VALID, VALID, INVALID, VALID, INVALID, VALID, VALID, VALID },

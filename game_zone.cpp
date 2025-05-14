@@ -11,6 +11,11 @@ Game_zone :: Game_zone(){
     }
 }
 
+/* ----------------------------------------------------------------------[<]-
+    Function: print_start_zonenput 
+    Synopsis: function that calls methods from Start_instruction class
+              to print start field.
+    ---------------------------------------------------------------------[>]-*/
 
 void Game_zone::print_start_zone(int play_zone[7][9], Start_instruction& instruction) {
     instruction.up_bottom_fill();
@@ -48,6 +53,12 @@ void Game_zone::print_start_zone(int play_zone[7][9], Start_instruction& instruc
 
     instruction.up_bottom_fill();
 }
+
+/* ----------------------------------------------------------------------[<]-
+    Function: print_final_zone 
+    Synopsis: function that calls methods from Start_instruction class
+              to print finish field with all ships being placed.
+    ---------------------------------------------------------------------[>]-*/
 
 void Game_zone::print_final_zone(int play_zone[7][9], Start_instruction& instruction) {
     instruction.up_bottom_fill();
@@ -92,6 +103,7 @@ void Game_zone::print_final_zone(int play_zone[7][9], Start_instruction& instruc
     instruction.up_bottom_fill();
 }
 
+// function to copy our zone from global variable to that one we are using during the programs works.
 void Game_zone :: copy_zone(int src[7][9], int dest[7][9]) {
     for (int i = 0; i < 7; i++) {
         for (int j = 0; j < 9; j++) {
@@ -100,17 +112,17 @@ void Game_zone :: copy_zone(int src[7][9], int dest[7][9]) {
     }
 }
 
-// checking is place inside zone
+// checking is place inside zone.
 bool Game_zone :: is_inside_zone(int x, int y) {
     return x >= 0 && x < 7 && y >= 0 && y < 9;
 }
 
-// checking if it is a ship
+// checking if it is a ship.
 bool Game_zone :: is_ship(int *zone) {
     return *zone != VALID && *zone != INVALID && *zone != SPECIAL;
 }
 
-// checking if there ships around
+// checking if there ships around.
 bool Game_zone :: has_nearby_ship(int x, int y, int play_zone[7][9]) {
     int dx[] = {-1, -1, -1,  0, 0, 1, 1, 1};
     int dy[] = {-1,  0,  1, -1, 1,-1, 0, 1};
@@ -126,6 +138,7 @@ bool Game_zone :: has_nearby_ship(int x, int y, int play_zone[7][9]) {
     return false;
 }
 
+// checking is box VALID to place ship in there.
 bool Game_zone :: is_valid(int *zone) {
     return *zone == VALID;
 }

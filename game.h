@@ -3,6 +3,15 @@
 
 #include "game_zone.h"
 
+
+/* ----------------------------------------------------------------------[<]-
+    Class: Game
+
+    Synopsis: this header contains all the logic of the programm.
+              The algorithm and everything for him.
+              Also this class initilizes friend class for testing algorithm.
+    ---------------------------------------------------------------------[>]-*/
+
 class Game : public Game_zone{
     private:
         friend class GameTest;

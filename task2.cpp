@@ -1,3 +1,25 @@
+/* -----------------------------------------------------<Header>-
+
+Name: task2.cpp
+Title: place ships in the field
+
+Group: TB-41
+Student: Drogobytskyy V.Y.
+Written: 14.05.2025
+Revised: 18.05.2025
+
+Description: Write a programm that places all the ships
+            in field with non standart form. Also it 
+            has to solve this task with some specific
+            rules. The main thing is that: ships can`t 
+            touch each other even diagonally in the cornenrs.
+            One more rule is that we can`t place ship in the box
+            with approximately equal sing.
+
+ -----------------------------------------------------<Header>-*/
+
+
+
 #include <iostream>
 #include <string>
 #include <limits>
@@ -15,10 +37,20 @@
 using namespace std;
 using namespace chrono;
 
+/* ----------------------------------------------------------------------[<]-
+    Function: is_valid_input 
+    Synopsis: function return true only in right
+    and valid input, and are used just like a small helpful
+    part in another system.
+    ---------------------------------------------------------------------[>]-*/
+
 bool is_valid_input(const string& input) {
     return input == "1" || input == "start" || input == "2" || input == "exit";
 }
 
+/*
+    name of the function talks by itself
+*/
 string get_valid_input(Start_instruction &instruction) {
     string input;
 
@@ -48,6 +80,9 @@ void processing_time_spend(){
     }
 }
 
+/*
+    the main block of programm like a heart of the whole mechanism.
+*/
 int main(void) {
     cout << endl;
 

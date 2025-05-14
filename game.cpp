@@ -11,12 +11,20 @@ Game :: Game() : Game_zone(){
     };
 }
 
+// destructing all ships
 Game :: ~Game() {
     for (Linked_ships* sh : ship_list) {
         delete sh;
     }
     ship_list.clear(); 
 }
+
+/* ----------------------------------------------------------------------[<]-
+    Function: remove_ship 
+    Synopsis: function for deleting already placed ship from the field,
+              if there is such need. It works when we have to come back
+              and delete the wrong placed ship.
+    ---------------------------------------------------------------------[>]-*/
 
 bool Game :: remove_ship(int play_zone[7][9], Linked_ships* ship, int x, int y, bool vertical, int &ships_placed_count) {
     int length = ship->get_data();
@@ -36,6 +44,13 @@ bool Game :: remove_ship(int play_zone[7][9], Linked_ships* ship, int x, int y, 
 
     return true;
 }
+
+/* ----------------------------------------------------------------------[<]-
+    Function: place_ship_if_possible 
+    Synopsis: function for placing ships in the field. It checks is it
+              possible starts from vertical and finish with horizontal
+              ship rotations.
+    ---------------------------------------------------------------------[>]-*/
 
 bool Game :: place_ship_if_possible(int play_zone[7][9], Linked_ships* ship, int x, int y, bool vertical, int &ships_placed_count) {
     int length = ship->get_data();
@@ -81,7 +96,13 @@ bool Game :: place_ship_if_possible(int play_zone[7][9], Linked_ships* ship, int
     }
 }
 
-// main algotithm 
+/* ----------------------------------------------------------------------[<]-
+    Function: place_all_ships 
+    Synopsis: the heart of algorithm. It is representing of back-tracking
+              way to find the right solution. This function works like a 
+              recursive mechanism and works until the solution is fined.
+    ---------------------------------------------------------------------[>]-*/
+
 bool Game :: place_all_ships(int play_zone[7][9], ship_vector& ship_list, int idx, int &ships_placed_count) {
     if (idx == (int)ship_list.size()) return true;
 

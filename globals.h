@@ -3,6 +3,11 @@
 
 #include <iostream>
 
+/*
+    some globals variables
+*/
+
+// enum for representing field
 enum g_CellState {
     INVALID = 0,
     SPECIAL = 7,

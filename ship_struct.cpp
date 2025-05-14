@@ -1,5 +1,8 @@
 #include "ship_struct.h"
 
+/*
+    constucting ships
+*/
 Linked_ships :: Linked_ships(int len) {
     head = nullptr;
 
@@ -12,6 +15,9 @@ Linked_ships :: Linked_ships(int len) {
     }
 }
 
+/*
+    destructing ships
+*/
 Linked_ships :: ~Linked_ships(){
     Ship *current = head;
 
@@ -22,11 +28,12 @@ Linked_ships :: ~Linked_ships(){
         delete temp;
     }
 }
-
+// method that return number with what ship is represented
 int Linked_ships :: get_data() const {
     return head ? head->data : -1; 
 }
 
+// return the start of the ship.
 Ship* Linked_ships :: get_head() const {
     return head; 
 }

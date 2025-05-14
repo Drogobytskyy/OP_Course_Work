@@ -9,6 +9,15 @@
 #include "start_instruction.h"
 
 
+/* ----------------------------------------------------------------------[<]-
+    Class: Game_zone
+
+    Synopsis: this header was created for representing our field. 
+              It includes all the methods to print, work and undestand
+              our field. Also it has method to increment and decrement 
+              number of placed ships by algoritm working time.
+    ---------------------------------------------------------------------[>]-*/
+
 class Game_zone{
     private:
         int play_zone[7][9];
