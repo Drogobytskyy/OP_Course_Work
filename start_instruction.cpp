@@ -59,7 +59,6 @@ void Start_instruction :: controlled_output(const string& text_to_show) {
     }
 }
 
-
 /* 
     show_message_block function print vector of messages.
 */
@@ -74,11 +73,6 @@ void Start_instruction :: custom_message(const string &message){
     up_bottom_fill();
     controlled_output(message);
     up_bottom_fill();
-}
-
-// if we need only specifie a text this help us
-void Start_instruction :: custom_only_text(const string &message){
-    controlled_output(message);
 }
 
 void Start_instruction :: show_ships() {

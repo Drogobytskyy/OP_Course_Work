@@ -64,7 +64,7 @@ string get_valid_input(Start_instruction &instruction) {
         if (is_valid_input(input)) {
             return input;
         } else {
-            instruction.custom_message("Invalid input. Please try again.");
+            instruction.controlled_output("Invalid input. Please try again.");
             
         }
     }
@@ -94,8 +94,8 @@ int main(void) {
     instruction.show();  
     instruction.up_bottom_fill();
 
-    instruction.custom_only_text("If you undestood everything do you want to start?");
-    instruction.custom_only_text("Type: (1) or \"start\" | (2) or \"exit\"");
+    instruction.controlled_output("If you undestood everything do you want to start?");
+    instruction.controlled_output("Type: (1) or \"start\" | (2) or \"exit\"");
 
     instruction.up_bottom_fill();
 
@@ -106,7 +106,7 @@ int main(void) {
         instruction.clear_screen();
 
         instruction.custom_message("Let's start!");
-        instruction.custom_only_text("So, let's look what field do we have!");
+        instruction.controlled_output("So, let's look what field do we have!");
 
         instruction.up_bottom_fill();
 
@@ -114,11 +114,11 @@ int main(void) {
 
         while(true){
             instruction.up_bottom_fill();
-            instruction.custom_only_text("Did you understand the rules?");
+            instruction.controlled_output("Did you understand the rules?");
             instruction.up_bottom_fill();
 
-            instruction.custom_only_text("If you undestood everything do you want to start?");
-            instruction.custom_only_text("Type: (1) or \"start\" | (2) - to see instructin again or \"exit\"");
+            instruction.controlled_output("If you undestood everything do you want to start?");
+            instruction.controlled_output("Type: (1) or \"start\" | (2) - to see instructin again or \"exit\"");
 
             instruction.up_bottom_fill();
 
@@ -138,8 +138,8 @@ int main(void) {
             }else{
                 instruction.clear_screen();
                 instruction.show();
-                instruction.custom_only_text("If you undestood everything do you want to start?");
-                instruction.custom_only_text("Type: (1) or \"start\" | (2) - to see field again or \"exit\"");
+                instruction.controlled_output("If you undestood everything do you want to start?");
+                instruction.controlled_output("Type: (1) or \"start\" | (2) - to see field again or \"exit\"");
                 instruction.up_bottom_fill();
 
                 string choice_of_choices = get_valid_input(instruction);
@@ -148,7 +148,7 @@ int main(void) {
 
                     instruction.clear_screen();
                     instruction.up_bottom_fill();
-                    instruction.custom_only_text("So, let's look what field do we have!");
+                    instruction.controlled_output("So, let's look what field do we have!");
                     game.print_start_zone(g_play_zone, instruction);
 
                 }else if(choice_of_choices == "exit"){
@@ -180,13 +180,13 @@ int main(void) {
             int deleted = game.get_ship_deleting_counter();
 
             // extra informations
-            instruction.custom_only_text("By the time algoritm worked");
-            instruction.custom_only_text("Total ships was placed: " + to_string(placed));
-            instruction.custom_only_text("Total ships was removed: " + to_string(deleted));
+            instruction.controlled_output("By the time algoritm worked");
+            instruction.controlled_output("Total ships was placed: " + to_string(placed));
+            instruction.controlled_output("Total ships was removed: " + to_string(deleted));
 
             auto end_time = high_resolution_clock::now();
             auto duration = duration_cast<seconds>(end_time - start_time);
-            instruction.custom_only_text("Program worked for: " + to_string(duration.count()) + " seconds");
+            instruction.controlled_output("Program worked for: " + to_string(duration.count()) + " seconds");
             instruction.up_bottom_fill();
             
         } else {

@@ -26,7 +26,6 @@ class Start_instruction {
         void controlled_output(const std::string &s);
         void show();
         void custom_message(const std::string &message);
-        void custom_only_text(const std::string &message);
 
         /*
             this little function checks what systeam user are in
