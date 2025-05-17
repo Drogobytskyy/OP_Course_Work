@@ -76,10 +76,6 @@ void Start_instruction :: custom_message(const string &message){
     up_bottom_fill();
 }
 
-void Start_instruction :: up_and_bot(){
-    up_bottom_fill();
-}
-
 // if we need only specifie a text this help us
 void Start_instruction :: custom_only_text(const string &message){
     controlled_output(message);

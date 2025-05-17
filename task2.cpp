@@ -92,12 +92,12 @@ int main(void) {
     Game game;
 
     instruction.show();  
-    instruction.up_and_bot();
+    instruction.up_bottom_fill();
 
     instruction.custom_only_text("If you undestood everything do you want to start?");
     instruction.custom_only_text("Type: (1) or \"start\" | (2) or \"exit\"");
 
-    instruction.up_and_bot();
+    instruction.up_bottom_fill();
 
     string choice = get_valid_input(instruction);
 
@@ -108,19 +108,19 @@ int main(void) {
         instruction.custom_message("Let's start!");
         instruction.custom_only_text("So, let's look what field do we have!");
 
-        instruction.up_and_bot();
+        instruction.up_bottom_fill();
 
         game.print_start_zone(g_play_zone, instruction);
 
         while(true){
-            instruction.up_and_bot();
+            instruction.up_bottom_fill();
             instruction.custom_only_text("Did you understand the rules?");
-            instruction.up_and_bot();
+            instruction.up_bottom_fill();
 
             instruction.custom_only_text("If you undestood everything do you want to start?");
             instruction.custom_only_text("Type: (1) or \"start\" | (2) - to see instructin again or \"exit\"");
 
-            instruction.up_and_bot();
+            instruction.up_bottom_fill();
 
             string choice_to_continue = get_valid_input(instruction);
 
@@ -187,7 +187,7 @@ int main(void) {
             auto end_time = high_resolution_clock::now();
             auto duration = duration_cast<seconds>(end_time - start_time);
             instruction.custom_only_text("Program worked for: " + to_string(duration.count()) + " seconds");
-            instruction.up_and_bot();
+            instruction.up_bottom_fill();
             
         } else {
             cout << "ERROR." << endl;
